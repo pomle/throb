@@ -2,7 +2,36 @@
 
 Higher order functions to avoid race conditions, hammering, etc.
 
-## derace
+* [`debounce`](#debounce)
+* [`derace`](#derace)
+* [`throttle`](#throttle)
+
+## `debounce`
+
+Ensures a function is only executed if it has not been called again during a some time.
+
+### Usage
+
+In the example below, we search as the user types. We only want to make a network request if the user stops typing, so that there is not one request per keystroke.
+
+```ts
+import { debounce } from "@pomle/throb";
+
+function search(query: string) {
+  return fetch("http://search.com/query=" + query)
+    .then(result => {
+      console.log(result);
+    });
+}
+
+const handleType = debounce(search, 500);
+
+document.querySelector("#search").addEventListener("input", (event) => {
+  handleType(event.target.value);
+});
+```
+
+## `derace`
 
 Ensures that only the most up to date call to a promise resolves.
 
@@ -30,33 +59,7 @@ setInterval(() => {
 }, 1000);
 ```
 
-
-## debounce
-
-Ensures a function is only executed if it has not been called again during a some time.
-
-### Usage
-
-In the example below, we search as the user types. We only want to make a network request if the user stops typing, so that there is not one request per keystroke.
-
-```ts
-import { debounce } from "@pomle/throb";
-
-function search(query: string) {
-  return fetch("http://search.com/query=" + query)
-    .then(result => {
-      console.log(result);
-    });
-}
-
-const handleType = debounce(search, 500);
-
-document.querySelector("#search").addEventListener("input", (event) => {
-  handleType(event.target.value);
-});
-```
-
-## throttle
+## `throttle`
 
 Ensures a function only executed a maximum every once per interval.
 
