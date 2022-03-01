@@ -1,16 +1,16 @@
 import { derace } from "../derace";
 
 function createAsyncHandle() {
-  let resolve: (value: unknown) => void;
+  let resolveNow: (value: unknown) => void;
 
-  const promise = new Promise((r) => {
-    resolve = r;
+  const promise = new Promise((resolve) => {
+    resolveNow = resolve;
   });
 
   return {
     promise,
     complete(value: unknown) {
-      resolve(value);
+      resolveNow(value);
     },
   };
 }
