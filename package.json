@@ -1,6 +1,6 @@
 {
   "name": "@pomle/throb",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Higher order functions to avoid race conditions, hammering, etc.",
   "author": "Pontus Alexander <pontus.alexander@gmail.com>",
   "license": "MIT",
