@@ -56,3 +56,33 @@ document.querySelector("#search").addEventListener("input", (event) => {
 });
 ```
 
+## throttle
+
+Ensures a function only executed a maximum every once per interval.
+
+### Usage
+
+In the example below, we log the pointer position every time it is moved, and send to a server every half second at most.
+
+```ts
+import { throttle } from "@pomle/throb";
+
+const buffer: number[] = [];
+
+function flush() {
+  const data = [...buffer];
+  buffer.length = 0;
+
+  return fetch("http://backend.com/data", {
+    method: "POST",
+    body: JSON.stringify(data)
+  })
+}
+
+const readyToSend = throttle(flush, 500);
+
+document.addEventListener("pointermove", (event) => {
+  buffer.push(event.clientX);
+  readyToSend();
+});
+```
