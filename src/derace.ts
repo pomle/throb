@@ -1,9 +1,9 @@
-export function derace<Args extends unknown[], Result extends any>(
-  func: (...args: Args) => Promise<Result>,
+export function derace<F extends (...args: unknown[]) => Promise<unknown>>(
+  func: F,
 ) {
   let counter = 0;
 
-  return async function deracedFunction(...args: Args) {
+  return async function deracedFunction(...args: Parameters<F>) {
     const id = ++counter;
 
     const result = await func(...args);

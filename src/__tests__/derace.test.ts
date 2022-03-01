@@ -1,15 +1,15 @@
 import { derace } from "../derace";
 
-function createAsyncHandle() {
-  let resolveNow: (value: unknown) => void;
+function createAsyncHandle<T>(value: T) {
+  let resolveNow: (value: T) => void;
 
-  const promise = new Promise((resolve) => {
+  const promise = new Promise<T>((resolve) => {
     resolveNow = resolve;
   });
 
   return {
     promise,
-    complete(value: unknown) {
+    complete() {
       resolveNow(value);
     },
   };
@@ -17,8 +17,8 @@ function createAsyncHandle() {
 
 describe("#derace", () => {
   it("rejects a resolved promise that is outdated", async () => {
-    const handle1 = createAsyncHandle();
-    const handle2 = createAsyncHandle();
+    const handle1 = createAsyncHandle("bar");
+    const handle2 = createAsyncHandle("foo");
 
     let index = 0;
     const handles = [handle1, handle2];
@@ -32,8 +32,8 @@ describe("#derace", () => {
     const promise1 = deraced();
     const promise2 = deraced();
 
-    handle1.complete("bar");
-    handle2.complete("foo");
+    handle1.complete();
+    handle2.complete();
 
     await Promise.all([
       expect(promise1).rejects.toEqual(new Error("Outdated result")),
@@ -42,9 +42,9 @@ describe("#derace", () => {
   });
 
   it("resolves all promises resolving in order", async () => {
-    const handle1 = createAsyncHandle();
-    const handle2 = createAsyncHandle();
-    const handle3 = createAsyncHandle();
+    const handle1 = createAsyncHandle(1);
+    const handle2 = createAsyncHandle(2);
+    const handle3 = createAsyncHandle(3);
 
     let index = 0;
     const handles = [handle1, handle2, handle3];
@@ -56,15 +56,15 @@ describe("#derace", () => {
     const deraced = derace(makeCall);
 
     const promise1 = deraced();
-    handle1.complete(1);
+    handle1.complete();
     await expect(promise1).resolves.toEqual(1);
 
     const promise2 = deraced();
-    handle2.complete(2);
+    handle2.complete();
     await expect(promise2).resolves.toEqual(2);
 
     const promise3 = deraced();
-    handle3.complete(3);
+    handle3.complete();
     await expect(promise3).resolves.toEqual(3);
   });
 });
