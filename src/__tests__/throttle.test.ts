@@ -34,16 +34,17 @@ describe("#throttle", () => {
   });
 
   it("calls function with same args", async () => {
-    const spy = jest.fn();
+    const spy = jest.fn((a: number, b: string) => {
+      return [a, b].join(",");
+    });
 
     const call = throttle(spy, 300);
 
-    const ref = Symbol("fake ref");
-    call(1, "a", false, ref);
+    call(1, "a");
 
     jest.advanceTimersByTime(300);
 
-    expect(spy).toHaveBeenCalledWith(1, "a", false, ref);
+    expect(spy).toHaveBeenCalledWith(1, "a");
   });
 
   it("calls function regardless if function is called again when timeout expired", async () => {

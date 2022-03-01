@@ -1,10 +1,10 @@
-export function debounce<F extends (...args: unknown[]) => void>(
-  func: F,
+export function debounce<Args extends unknown[]>(
+  func: (...args: Args) => void,
   wait: number,
 ) {
   let timeout: number;
 
-  return function debouncedFunction(...args: Parameters<F>) {
+  return function debouncedFunction(...args: Args) {
     const later = () => {
       window.clearTimeout(timeout);
       func(...args);
