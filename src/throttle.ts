@@ -1,10 +1,10 @@
-export function throttle<F extends (...args: unknown[]) => void>(
-  fn: F,
+export function throttle<Args extends unknown[]>(
+  fn: (...args: Args) => void,
   timeout: number,
 ) {
   let set: boolean = false;
 
-  return function throttledFunction(...args: Parameters<F>) {
+  return function throttledFunction(...args: Args) {
     if (set) {
       return;
     }
