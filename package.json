@@ -1,12 +1,12 @@
 {
-  "name": "",
-  "version": "0.0.0-0",
-  "description": "",
-  "author": "",
+  "name": "@pomle/throb",
+  "version": "0.1.0-0",
+  "description": "Higher order functions to avoid race conditions, hammering, etc.",
+  "author": "Pontus Alexander <pontus.alexander@gmail.com>",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/"
+    "url": "git+https://github.com/pomle/throb"
   },
   "keywords": [],
   "main": "dist/index.js",
