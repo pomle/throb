@@ -8,7 +8,7 @@ Ensures that only the most up to date call to a promise resolves.
 
 ### Usage
 
-In the example below, we call a server to get the current time to display. If we did not use `derace`, an earlier call to `getTime` could resolve after the last, and show an outdated result.
+In the example below, we call a server to get the current time to display. If we did not use `derace`, an earlier call to `getTime` could resolve after the last, and show an outdated result. If an outdated promise resolves, it the promise will throw. Thus, outdated results will end up in the catch clause.
 
 ```
 import { derace } from "@pomle/throb";
@@ -29,3 +29,5 @@ setInterval(() => {
     });
 }, 1000);
 ```
+
+
