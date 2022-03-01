@@ -20,6 +20,7 @@
     "start": "microbundle-crl watch --no-compress --format modern,cjs",
     "test": "yarn test:unit && yarn test:lint && yarn test:build",
     "test:build": "run-s build",
+    "format": "prettier --write 'src/**/*.{js,jsx,ts,tsx,json,css,scss,md}'",
     "test:lint": "eslint src --ext .ts",
     "test:unit": "jest --verbose"
   },
