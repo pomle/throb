@@ -8,7 +8,7 @@ Higher order functions to avoid race conditions, hammering, etc.
 
 ## `debounce`
 
-Ensures a function is only executed if it has not been called again during a some time.
+Ensures a function is only executed if it has not been called again during some time.
 
 ### Usage
 
@@ -61,7 +61,7 @@ setInterval(() => {
 
 ## `throttle`
 
-Ensures a function only executed a maximum every once per interval.
+Ensures a function is executed exactly once per interval if called.
 
 ### Usage
 
