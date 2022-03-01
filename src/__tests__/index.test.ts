@@ -1,18 +1,18 @@
-import { derace } from '../derace';
-import { debounce } from '../debounce';
-import { throttle } from '../throttle';
-import * as index from '../index';
+import { derace } from "../derace";
+import { debounce } from "../debounce";
+import { throttle } from "../throttle";
+import * as index from "../index";
 
-describe('index', () => {
-  it('exports derace', () => {
+describe("index", () => {
+  it("exports derace", () => {
     expect(index.derace).toBe(derace);
   });
 
-  it('exports debounce', () => {
+  it("exports debounce", () => {
     expect(index.debounce).toBe(debounce);
   });
 
-  it('exports throttle', () => {
+  it("exports throttle", () => {
     expect(index.throttle).toBe(throttle);
   });
 });
