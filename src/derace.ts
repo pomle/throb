@@ -9,7 +9,7 @@ export function derace<Args extends unknown[], Result extends any>(
     const result = await func(...args);
 
     if (id !== counter) {
-      throw new Error('Outdated result');
+      throw new Error("Outdated result");
     }
 
     return result;
