@@ -3,9 +3,9 @@ export function turnstyle<Args extends unknown[], Result extends unknown>(
 ) {
   let active = false;
 
-  return function turnstyledFunction(...args: Args): Promise<Result> | null {
+  return function turnstyledFunction(...args: Args) {
     if (active) {
-      return null;
+      return;
     }
 
     active = true;
