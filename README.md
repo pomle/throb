@@ -5,6 +5,7 @@ Higher order functions to avoid race conditions, hammering, etc.
 - [`debounce`](#debounce)
 - [`derace`](#derace)
 - [`throttle`](#throttle)
+- [`turnstyle`](#turnstyle)
 
 ## `debounce`
 
@@ -86,5 +87,42 @@ const readyToSend = throttle(flush, 500);
 document.addEventListener("pointermove", (event) => {
   buffer.push(event.clientX);
   readyToSend();
+});
+```
+
+## `turnstyle`
+
+Synchronously ensure only a single asynchronous call is in flight at any given time. Returns Promise if the call was allowed, otherwise `undefined`.
+
+### Usage
+
+In the example, clicks on a button does not produce calls until the promise has resolved.
+
+```ts
+import { turnstyle } from "@pomle/throb";
+
+function saveData(data: any) {
+  return fetch("http://backend.com/data", {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
+}
+
+const saveSafe = turnstyle(saveData);
+
+document.querySelector("button").addEventListener("click", (event) => {
+  const promise = saveSafe({ name: "Turtles" });
+  if (!promise) {
+    alert("Take it easy");
+    return;
+  }
+
+  promise
+    .then(() => {
+      alert("Data was saved");
+    })
+    .catch(() => {
+      alert("Data saved failed");
+    });
 });
 ```
