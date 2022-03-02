@@ -4,6 +4,7 @@ Higher order functions to avoid race conditions, hammering, etc.
 
 - [`debounce`](#debounce)
 - [`derace`](#derace)
+- [`knock`](#knock)
 - [`throttle`](#throttle)
 - [`turnstyle`](#turnstyle)
 
@@ -57,6 +58,29 @@ setInterval(() => {
       console.info(error);
     });
 }, 1000);
+```
+
+## `knock`
+
+Prevents calling function until it has been attempted to be called a number of times.
+
+### Usage
+
+Example below shows an overlay when the user moves pointer over screen. In order to avoid being overly sensitive to movement, we ignore the 5 first events. We then forget that movement after 2000 ms of inactivity.
+
+```ts
+import { knock } from "@pomle/throb";
+
+function handlePointer() {
+  document.body.classList.add("overlay");
+}
+
+const threshold = 5;
+const remember = 2000;
+
+const onPointerMove = knock(handlePointer, threshold, remember);
+
+window.addEventListener("pointermove", onPointerMove);
 ```
 
 ## `throttle`
