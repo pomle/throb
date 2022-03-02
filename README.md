@@ -2,10 +2,10 @@
 
 Higher order functions to avoid race conditions, hammering, etc.
 
-* [`debounce`](#debounce)
-* [`derace`](#derace)
-* [`throttle`](#throttle)
-* [`turnstyle`](#turnstyle)
+- [`debounce`](#debounce)
+- [`derace`](#derace)
+- [`throttle`](#throttle)
+- [`turnstyle`](#turnstyle)
 
 ## `debounce`
 
@@ -19,10 +19,9 @@ In the example below, we search as the user types. We only want to make a networ
 import { debounce } from "@pomle/throb";
 
 function search(query: string) {
-  return fetch("http://search.com/query=" + query)
-    .then(result => {
-      console.log(result);
-    });
+  return fetch("http://search.com/query=" + query).then((result) => {
+    console.log(result);
+  });
 }
 
 const handleType = debounce(search, 500);
@@ -51,10 +50,10 @@ const updateTime = derace(getTime);
 
 setInterval(() => {
   updateTime()
-    .then(time => {
+    .then((time) => {
       window.title = time;
     })
-    .catch(error => {
+    .catch((error) => {
       console.info(error);
     });
 }, 1000);
@@ -79,8 +78,8 @@ function flush() {
 
   return fetch("http://backend.com/data", {
     method: "POST",
-    body: JSON.stringify(data)
-  })
+    body: JSON.stringify(data),
+  });
 }
 
 const readyToSend = throttle(flush, 500);
@@ -93,7 +92,7 @@ document.addEventListener("pointermove", (event) => {
 
 ## `turnstyle`
 
-Synchronosly ensure only a single asynchronous call is in flight at any given time. Returns a promise if the call was allowed, otherwise null.
+Synchronously ensure only a single asynchronous call is in flight at any given time. Returns Promise if the call was allowed, otherwise `undefined`.
 
 ### Usage
 
@@ -112,12 +111,12 @@ function saveData(data: any) {
 const saveSafe = turnstyle(saveData);
 
 document.querySelector("button").addEventListener("click", (event) => {
-  const promise = saveSafe({name: "Turtles"});
-  if (promise === null) {
+  const promise = saveSafe({ name: "Turtles" });
+  if (!promise) {
     alert("Take it easy");
     return;
   }
-  
+
   promise
     .then(() => {
       alert("Data was saved");

@@ -15,16 +15,16 @@ describe("#turnstyle", () => {
     const call = turnstyle(spy);
 
     const promise1 = call();
-    expect(call()).toBe(null);
-    expect(call()).toBe(null);
-    expect(call()).toBe(null);
-    expect(call()).toBe(null);
+    expect(call()).toBe(undefined);
+    expect(call()).toBe(undefined);
+    expect(call()).toBe(undefined);
+    expect(call()).toBe(undefined);
     await expect(promise1).resolves.toEqual("foo");
     const promise2 = call();
-    expect(call()).toBe(null);
-    expect(call()).toBe(null);
-    expect(call()).toBe(null);
-    expect(call()).toBe(null);
+    expect(call()).toBe(undefined);
+    expect(call()).toBe(undefined);
+    expect(call()).toBe(undefined);
+    expect(call()).toBe(undefined);
     await expect(promise2).resolves.toEqual("foo");
   });
 
