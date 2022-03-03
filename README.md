@@ -120,7 +120,7 @@ Synchronously ensure only a single asynchronous call is in flight at any given t
 
 ### Usage
 
-When saving data to a backend, you want to avoid multiple requests originating from user error. An accidental double click on button could produce an error. Use turnstyle wrapper to ignore calls to a function while a Promise is in flight.
+When saving data to a backend, you want to avoid multiple requests originating from user error. Accidentally clicking twice on a button could produce an error. Use turnstyle wrapper to ignore calls to a function while a Promise is in flight.
 
 ```ts
 import { turnstyle } from "@pomle/throb";
