@@ -5,6 +5,7 @@ Higher order functions to avoid race conditions, hammering, etc.
 - [`debounce`](#debounce)
 - [`derace`](#derace)
 - [`knock`](#knock)
+- [`retry`](#retry)
 - [`throttle`](#throttle)
 - [`turnstyle`](#turnstyle)
 
@@ -81,6 +82,41 @@ const remember = 2000;
 const onPointerMove = knock(handlePointer, threshold, remember);
 
 window.addEventListener("pointermove", onPointerMove);
+```
+
+## `retry`
+
+Retries calls to a function according to specified backoff time pattern until it resolves.
+
+### Usage
+
+When fetch returns a response with a non-successful status code, sometimes it can make sense to retry the request. This example shows how to 
+wrap `fetch`, and have it retry the request 3 times, waiting first 100 ms, then 200 ms, and finally 500 ms, before giving up.
+
+The wrapped promise will resolve the original resolution if promise chain resolves, or throw array with accumulation of errors in array.
+
+```ts
+import { retry } from "@pomle/throb";
+
+function filterBad(response: Response) {
+  if (response.status === 500) {
+    throw new Error("Server Error");
+  }
+  return response;
+}
+
+const fetchWithRetry = retry((request: Request) => {
+  return fetch(request)
+    .then(filterBad);
+}, [100, 200, 500]);
+
+fetchWithRetry("http://backend.api/data")
+.then(response => {
+  console.log("Success");
+})
+.catch((errors) => {
+  console.warn("Retry attempts exhausted with following errors", errors);
+});
 ```
 
 ## `throttle`
