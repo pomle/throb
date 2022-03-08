@@ -10,6 +10,7 @@
     "declaration": true,
     "esModuleInterop": true,
     "noImplicitReturns": true,
+    "downlevelIteration": true,
     "noImplicitThis": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
