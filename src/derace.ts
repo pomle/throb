@@ -3,15 +3,13 @@ export function derace<Args extends unknown[], Result extends unknown>(
 ) {
   let counter = 0;
 
-  return async function deracedFunction(...args: Args): Promise<Result> {
+  return async function deracedFunction(
+    ...args: Args
+  ): Promise<[Result, boolean]> {
     const id = ++counter;
 
     const result = await func(...args);
 
-    if (id !== counter) {
-      throw new Error("Outdated result");
-    }
-
-    return result;
+    return [result, id === counter];
   };
 }

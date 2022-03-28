@@ -35,10 +35,10 @@ describe("#derace", () => {
 
     const call = derace(spy);
 
-    expect(call().then((text) => text.length)).resolves.toEqual(9);
+    expect(call().then(([text]) => text.length)).resolves.toEqual(9);
   });
 
-  it("rejects a resolved promise that is outdated", async () => {
+  it("resolves promise that is outdated with outdated flag set", async () => {
     const handle1 = createAsyncHandle("bar");
     const handle2 = createAsyncHandle("foo");
 
@@ -58,8 +58,8 @@ describe("#derace", () => {
     handle2.complete();
 
     await Promise.all([
-      expect(promise1).rejects.toEqual(new Error("Outdated result")),
-      expect(promise2).resolves.toEqual("foo"),
+      expect(promise1).resolves.toEqual(["bar", false]),
+      expect(promise2).resolves.toEqual(["foo", true]),
     ]);
   });
 
@@ -79,14 +79,24 @@ describe("#derace", () => {
 
     const promise1 = call();
     handle1.complete();
-    await expect(promise1).resolves.toEqual(1);
+    await expect(promise1).resolves.toEqual([1, true]);
 
     const promise2 = call();
     handle2.complete();
-    await expect(promise2).resolves.toEqual(2);
+    await expect(promise2).resolves.toEqual([2, true]);
 
     const promise3 = call();
     handle3.complete();
-    await expect(promise3).resolves.toEqual(3);
+    await expect(promise3).resolves.toEqual([3, true]);
+  });
+
+  it("rejects if promise rejects", () => {
+    const spy = jest.fn(() => {
+      return Promise.reject(new Error("err"));
+    });
+
+    const call = derace(spy);
+
+    expect(call()).rejects.toEqual(new Error("err"));
   });
 });

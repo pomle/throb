@@ -34,11 +34,11 @@ document.querySelector("#search").addEventListener("input", (event) => {
 
 ## `derace`
 
-Ensures that only the most up to date call to a promise resolves.
+Ensures that only the most up to date call to a resolved promise is used.
 
 ### Usage
 
-In the example below, we call a server to get the current time to display. If we did not use `derace`, an earlier call to `getTime` could resolve after the last, and show an outdated result. If an outdated promise resolves, the wrapper will throw, thus outdated results ends up in the catch clause.
+In the example below, we call a server to get the current time to display. If we did not use `derace`, an earlier call to `getTime` could resolve after the last, and show an outdated result. If an outdated promise resolves, the `sync` flag will be false, and the result can be ignored and the desync logged.
 
 ```ts
 import { derace } from "@pomle/throb";
@@ -51,8 +51,13 @@ const updateTime = derace(getTime);
 
 setInterval(() => {
   updateTime()
-    .then((time) => {
-      window.title = time;
+    .then(([time, sync]) => {
+      if (sync) {
+        window.title = time;
+      } else {
+        // Unsynced resolves may also be ignored or logged.
+        throw new Error("Out of sync");
+      }
     })
     .catch((error) => {
       console.info(error);
